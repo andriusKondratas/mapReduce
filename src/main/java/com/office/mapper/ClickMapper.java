@@ -8,6 +8,7 @@ import java.io.IOException;
 
 public class ClickMapper extends Mapper<Object, Text, Text, IntWritable> {
 
+    @Override
     public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
         context.write(new Text(value.toString()), new IntWritable(1));
     }

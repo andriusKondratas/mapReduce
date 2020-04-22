@@ -1,6 +1,26 @@
+## 1 Architecture: Design a tracking event ingestion pipeline
+
+### Task: Provide an architecture of a pipeline that collects various tracking events and stores them in permanent storage — HDFS (Hadoop Distributed File System) for further processing.
+Link to proposed context diagram (not any kind UML, just simple mind map):[TrackingEvents](https://github.com/officeI/mapReduce/tree/master/src/test/resources/trackingEvents.png)
+
+* Log based messaging (event sourcing, EDA) might be good fit for tracking various activities
+    * Different tracking events can be split into separate pipelines with storage, message schemas, partitioning, cluster, producers, consumers topology, in order to accomplish requested pipeline latency / throughput  
+    * Producers & Consumers designed to run on commodity hardware, therefore horizontal scale is durable
+    * There is less chance of event loss in log based messaging approach compared with other
+    * There are multiple clients, proxies, connectors, developed by OSS community, which enable to connect various event sources and targets
+    * Full asynchronous produce/consume - not blocking
+    * Possible to use OSS community connector to sink events into HDFS3, with repartitioning, required chunks capabilities
+* Eventually suggested pipeline might be enriched with liquid design [Raulcastrofernandez](https://raulcastrofernandez.com/papers/cidr15-liquid.pdf) elements
+    * Would enable at least near real time latencies (data is there asap)
+    * StreamsAPI's, ..SQL, would help
+    * It might occur more efficient to maintain/update models than rebuild them
+
+
+## 2 Engineering: Implement map-reduce framework simulation
+
 ### Prerequisites:
 * Maven installed & configured, e.g: `sudo apt install maven`
-* Any Open / Oracle / .. JDK installed, e.g : `sudo apt install default-jdk`
+* Any Open / Oracle / .. => 11 JDK installed, e.g : `sudo apt install default-jdk`
 * Repository cloned `git clone https://github.com/officeI/mapReduce.git ${repository location}`
 * Build .jar file
 ```
